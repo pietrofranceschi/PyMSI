@@ -9,7 +9,7 @@ from matplotlib.widgets import Button
 
 def getionimages(filename, mzs , tol = 1, outdir = 'EIT'):
     """Extract from an ImzML file a series of
-    extracted ion images and save them as png files
+    extracted ion images and save them as txt files
     in a specific folder
 
     Keyword arguments:
@@ -35,7 +35,7 @@ def getionimages(filename, mzs , tol = 1, outdir = 'EIT'):
         np.savetxt(finalpath, EITs[i], delimiter=",")
 
 
-## Alignment with the optical mage -------------------------------------------
+## Alignment with the optical image -------------------------------------------
 
 def hook(optical,EIT):
     '''Identify (and save) a series of reference points
@@ -59,7 +59,7 @@ def hook(optical,EIT):
     fig = plt.figure()
     axs.append(fig.add_subplot(121))
     axs.append(fig.add_subplot(122))
-    ## pu there the two butons
+    ## put there the two butons
     axcancel = plt.axes([0.7, 0.05, 0.1, 0.075])
     axsave = plt.axes([0.81, 0.05, 0.1, 0.075])
 
@@ -194,9 +194,6 @@ def transform(hooks,opticalimage,EITimage = '',EITfolder = '',outdir = 'EITwarp'
             warped = tf.warp(mzimage, tform3, output_shape=tissue.shape[0:2])
             finalpath = os.path.join(outdir,'wpd' + file)
             np.savetxt(finalpath, warped, delimiter=",")
-
-
-
 
 
     ## if te input is a folder process all the images present inside
