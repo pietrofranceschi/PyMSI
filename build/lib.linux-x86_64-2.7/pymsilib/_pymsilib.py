@@ -7,22 +7,16 @@ from skimage import transform as tf
 from skimage.color import rgb2gray
 from matplotlib.widgets import Button
 
-def getionimages(filename, mzs , tol = 1):
+def getionimages(filename, mzs , tol = 1, outdir = 'EIT'):
     """Extract from an ImzML file a series of
-    extracted ion images 
-   
-    :param filename:
-        the name of the ImzML file
-    :param mzs: 
-        a string with the target ions sebarated by commas
-    :param tol:
-        the m/z tolerance for extracting the trace (default = 1)
+    extracted ion images and save them as txt files
+    in a specific folder
 
-    Output:
-
-    :EITs:
-        a list of numpy matrices 
-
+    Keyword arguments:
+    filename -- the name of the ImzML file
+    mzs -- a string with the target ions sebarated by commas
+    tol -- the m/z tolerance for extracting the trace (default = 1)
+    outdir -- the directory where the EIT are stored (default = 'EIT')
     """
     p = ImzMLParser(filename)
     ## Extracct the ion images
@@ -30,29 +24,15 @@ def getionimages(filename, mzs , tol = 1):
     mz = [float(x.strip()) for x in mzs.split(',')]
     EITs  = [getionimage(p, x, tol) for x in mz]
 
-    return EITs
+    ## create the foder to save the EITs
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
 
-
-
-## TIC images
-
-def getTIC(filename, z=0):
-    """Generate a TIC image for a specific ImzML file and save it
-    as a csv file
-
-    :param filename:
-        the name of the ImzML file
-    :param z:
-        z Value if spectrogram is 3-dimensional.
-    """
-
-    p = ImzMLParser(filename)
-    im = np.zeros((p.imzmldict["max count of pixels y"], p.imzmldict["max count of pixels x"]))
-    for i, (x, y, z_) in enumerate(p.coordinates):
-        if z_ == z:
-            mzs, ints = map(lambda x: np.asarray(x), p.getspectrum(i))
-            im[y - 1, x - 1] = sum(ints)
-    return im
+    ## save the files
+    for i in range(0,len(EITs)):
+        finalpath = os.path.join(outdir,'mz_' + str(mz[i]) + '.csv')
+        print finalpath
+        np.savetxt(finalpath, EITs[i], delimiter=",")
 
 
 ## Alignment with the optical image -------------------------------------------

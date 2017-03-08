@@ -1,7 +1,6 @@
 import click
 import pymsilib
-import numpy as np
-import os
+
 
 
 @click.group()
@@ -17,42 +16,14 @@ def cli():
 @click.argument('filename', type = str, nargs = -1)
 @click.option('--mzs', help = "mz of interest, comma separated",  type = str )
 @click.option('--tol', default = 1.0, help = "Tolerance for the extraction of the EIT", type = float)
-def getionimages(filename, mzs, tol):
+@click.option('--outdir', default = 'EIT', help = "Where to store the EITs", type = str)
+def getionimages(filename, mzs, tol, outdir):
     """
     Exract from a ImzML file a series of extracted ion images
     and store them into separate files
     """
-
-    with click.progressbar(filename) as bar:
-        for f in bar:
-            myEITs = pymsilib.getionimages(f,mzs,tol)
-            file_name, file_extension = os.path.splitext(f)
-            ## save the files
-            for i in range(0,len(myEITs)):
-                finalpath = os.path.join(file_name + '_mz_' + str(mz[i]) + '.csv')
-                np.savetxt(finalpath, EITs[i], delimiter=",")
-
-
-
-@cli.command()
-@click.argument('filename', type = str, nargs = -1)
-def getTIC(filename):
-    """
-    Exract from a ImzML file the TIC image
-    """
-
-    with click.progressbar(filename) as bar:
-        for f in bar:
-            myTICs = pymsilib.getTIC(f)
-            file_name, file_extension = os.path.splitext(f)
-            ## save the files
-            for i in range(0,len(myTICs)):
-                finalpath = os.path.join(file_name + '_TIC' + '.csv')
-                np.savetxt(finalpath, TICs[i], delimiter=",")
-
-
-
-
+    print(filename)
+    #chiesimsilib.getionimages(filename,mzs,tol,outdir)
 
 @cli.command()
 @click.option('--optical', help = "image file (read into with matplotlib)", type = str)
@@ -67,7 +38,7 @@ def hook(optical,EIT):
     optical  --  the name of the image file with the optical image
     EIT -- the file name of the csv containing the mz image
     '''
-    pymsilib.hook(optical,EIT)
+    chiesimsilib.hook(optical,EIT)
 
 
 @cli.command()
@@ -82,4 +53,4 @@ def transform(hooks,opticalimage,EIT,EITfolder,outdir):
     on the bases of a set of hook points. EIT images are resampled to match
     the size of the optical image
     '''
-    pymsilib.transform(hooks,opticalimage,EIT,EITfolder,outdir)
+    chiesimsilib.transform(hooks,opticalimage,EIT,EITfolder,outdir)

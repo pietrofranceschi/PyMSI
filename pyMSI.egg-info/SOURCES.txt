@@ -1,0 +1,11 @@
+setup.py
+cmds/__init__.py
+cmds/pymsi_cmd.py
+pyMSI.egg-info/PKG-INFO
+pyMSI.egg-info/SOURCES.txt
+pyMSI.egg-info/dependency_links.txt
+pyMSI.egg-info/entry_points.txt
+pyMSI.egg-info/requires.txt
+pyMSI.egg-info/top_level.txt
+pymsilib/__init__.py
+pymsilib/_pymsilib.py

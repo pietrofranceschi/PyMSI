@@ -1,0 +1,4 @@
+
+        [console_scripts]
+        pymsi=cmds.pymsi_cmd:cli
+    

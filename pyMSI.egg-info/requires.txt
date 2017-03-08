@@ -1,0 +1,6 @@
+click
+matplotlib
+numpy
+pyimzml
+scipy
+scikit-image
